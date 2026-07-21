@@ -134,7 +134,7 @@ return new class extends Migration {
 
         Schema::create('inscricoes_estaduais', function (Blueprint $table) {
             $table->uuid()->primary();
-            $table->string('cnpj', 14)->unique();
+            $table->string('cnpj', 14);
             $table->string('uf', 2);
             $table->string('ie');
             $table->string('tipo_ie');
