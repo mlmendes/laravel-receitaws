@@ -1,0 +1,24 @@
+{
+    "name": "mlmendes/laravel-receitaws",
+    "description": "Integrate your Laravel application to Leads2b ReceitaWS API",
+    "type": "library",
+    "require": {
+        "spatie/laravel-package-tools": "^1.93",
+        "php": "^8.4",
+        "illuminate/contracts": "^13.20",
+        "illuminate/database": "^13.20",
+        "illuminate/support": "^13.20"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "MLMendes\\LaravelReceitaWS\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Lucas Mendes Martins",
+            "email": "martinslmendes@gmail.com"
+        }
+    ]
+}
