@@ -150,7 +150,7 @@ return new class extends Migration {
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            $table->unique(['cnpj', 'uf']);
+            $table->unique(['ie', 'uf']);
         });
     }
 
