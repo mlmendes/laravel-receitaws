@@ -44,7 +44,7 @@ class Empresa extends Model
 
     public function simeiHistorico(): HasManyThrough
     {
-        return $this->hasMany(SimeiHistorico::class, Simei::class);
+        return $this->hasManyThrough(SimeiHistorico::class, Simei::class);
     }
 
     public function simples(): HasOne
@@ -54,6 +54,6 @@ class Empresa extends Model
 
     public function simplesHistorico(): HasManyThrough
     {
-        return $this->hasMany(SimplesHistorico::class, Simples::class);
+        return $this->hasManyThrough(SimplesHistorico::class, Simples::class);
     }
 }
