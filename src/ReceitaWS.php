@@ -4,9 +4,8 @@ namespace MLMendes\LaravelReceitaWS;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use MLMendes\LaravelReceitaWS\Models\Empresa;
-use MLMendes\LaravelReceitaWS\Models\ReceitaWS as ReceitaWSModel;
 use MLMendes\LaravelReceitaWS\Enum\Fallback;
+use MLMendes\LaravelReceitaWS\Models\ReceitaWS as ReceitaWSModel;
 
 class ReceitaWS
 {
@@ -14,7 +13,7 @@ class ReceitaWS
     {
         $response = Http::acceptJson()->withToken($receitaWS->token)
             ->get("https://receitaws.com.br/v1/cnpj/{$cnpj}/days/{$days}", [
-                'fallback' => $fallback->value
+                'fallback' => $fallback->value,
             ]);
 
         Log::debug($response);
@@ -24,7 +23,7 @@ class ReceitaWS
     {
         $response = Http::acceptJson()->withToken($receitaWS->token)
             ->get("https://receitaws.com.br/v1/ccc/{$cnpj}/days/{$days}", [
-                'fallback' => $fallback->value
+                'fallback' => $fallback->value,
             ]);
 
         Log::debug($response);
@@ -34,7 +33,7 @@ class ReceitaWS
     {
         $response = Http::acceptJson()->withToken($receitaWS->token)
             ->get("https://receitaws.com.br/v1/simples/{$cnpj}/days/{$days}", [
-                'fallback' => $fallback->value
+                'fallback' => $fallback->value,
             ]);
 
         Log::debug($response);

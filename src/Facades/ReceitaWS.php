@@ -8,6 +8,7 @@ use MLMendes\LaravelReceitaWS\Models\ReceitaWS as ReceitaWSModel;
 
 /**
  * @method \MLMendes\LaravelReceitaWS\ReceitaWS receitaFederal(ReceitaWSModel $receitaWS, string $cnpj, int $days = 0, Fallback $fallback = Fallback::CACHE_ON_ERROR)
+ *
  * @see \MLMendes\LaravelReceitaWS\ReceitaWS
  */
 class ReceitaWS extends Facade

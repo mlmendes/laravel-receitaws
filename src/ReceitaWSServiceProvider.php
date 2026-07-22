@@ -16,7 +16,7 @@ class ReceitaWSServiceProvider extends PackageServiceProvider
     public function packageRegistered()
     {
         $this->app->singleton('ReceitaWS', function ($app) {
-            return new ReceitaWS();
+            return new ReceitaWS;
         });
     }
 }
