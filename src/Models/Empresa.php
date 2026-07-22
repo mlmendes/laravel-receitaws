@@ -11,12 +11,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 #[Fillable(['cnpj', 'tipo', 'porte', 'nome', 'fantasia', 'abertura', 'natureza_juridica', 'logradouro', 'numero', 'cep', 'bairro', 'municipio', 'uf', 'email', 'telefone', 'efr', 'situacao', 'data_situacao', 'motivo_situacao', 'situacao_especial', 'data_situacao_especial', 'capital_social', 'atividade_principal'])]
 #[Table(key: 'cnpj', keyType: 'string', incrementing: false)]
 #[WithoutTimestamps]
 class Empresa extends Model
 {
+    use SoftDeletes;
+
     public function atividadePrincipal(): BelongsTo
     {
         return $this->belongsTo(Atividade::class, 'atividade_principal', 'code');

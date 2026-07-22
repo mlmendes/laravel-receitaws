@@ -37,6 +37,7 @@ return new class extends Migration
             $table->date('data_situacao_especial');
             $table->decimal('capital_social');
             $table->string('atividade_principal', 7);
+            $table->softDeletes();
 
             $table->foreign('atividade_principal')
                 ->references('code')
