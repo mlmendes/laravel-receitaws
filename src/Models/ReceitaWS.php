@@ -3,6 +3,7 @@
 namespace MLMendes\LaravelReceitaWS\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
@@ -16,12 +17,13 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $updated_at
  */
 #[Fillable(['name', 'token'])]
+#[Hidden('token')]
 #[Table(name: 'receitaws', key: 'uuid', keyType: 'string', incrementing: false)]
 class ReceitaWS extends Model
 {
     use HasUuids;
 
-    protected function casts()
+    protected function casts(): array
     {
         return [
             'token' => 'encrypted',
