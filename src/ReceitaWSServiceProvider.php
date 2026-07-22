@@ -10,7 +10,10 @@ class ReceitaWSServiceProvider extends PackageServiceProvider
     public function configurePackage(Package $package): void
     {
         $package->name('laravel-receitaws')
-            ->hasMigration('create_empresas_tables');
+            ->hasMigrations([
+                'create_empresas_tables',
+                'create_receitaws_table',
+            ]);
     }
 
     public function packageRegistered()
