@@ -34,7 +34,7 @@ return new class extends Migration
             $table->date('data_situacao');
             $table->string('motivo_situacao');
             $table->string('situacao_especial');
-            $table->date('data_situacao_especial');
+            $table->date('data_situacao_especial')->nullable();
             $table->decimal('capital_social');
             $table->string('atividade_principal', 7);
             $table->softDeletes();
