@@ -27,5 +27,16 @@
         "MLMendes\\LaravelReceitaWS\\ReceitaWSServiceProvider"
       ]
     }
+  },
+  "require-dev": {
+    "laravel/pint": "^1.29"
+  },
+  "scripts": {
+    "lint": [
+      "pint --parallel"
+    ],
+    "lint:check": [
+      "pint --parallel --test"
+    ]
   }
 }

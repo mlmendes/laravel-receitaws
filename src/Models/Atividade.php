@@ -16,8 +16,6 @@ class Atividade extends Model
 {
     /**
      * Empresas que possuem essa atividade como principal
-     *
-     * @return HasMany
      */
     public function principalEmpresas(): HasMany
     {
@@ -26,8 +24,6 @@ class Atividade extends Model
 
     /**
      * Empresas que possuem essa atividade como secundária
-     *
-     * @return BelongsToMany
      */
     public function secundariaEmpresas(): BelongsToMany
     {
