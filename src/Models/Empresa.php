@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -45,9 +44,9 @@ class Empresa extends Model
         return $this->hasOne(Simei::class, 'cnpj', 'cnpj');
     }
 
-    public function simeiHistorico(): HasManyThrough
+    public function simeiHistorico(): HasMany
     {
-        return $this->hasManyThrough(SimeiHistorico::class, Simei::class);
+        return $this->hasMany(SimeiHistorico::class, 'cnpj', 'cnpj');
     }
 
     public function simples(): HasOne
@@ -55,8 +54,8 @@ class Empresa extends Model
         return $this->hasOne(Simples::class, 'cnpj', 'cnpj');
     }
 
-    public function simplesHistorico(): HasManyThrough
+    public function simplesHistorico(): HasMany
     {
-        return $this->hasManyThrough(SimplesHistorico::class, Simples::class);
+        return $this->hasMany(SimplesHistorico::class, 'cnpj', 'cnpj');
     }
 }

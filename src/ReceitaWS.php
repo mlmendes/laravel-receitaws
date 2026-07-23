@@ -122,6 +122,8 @@ class ReceitaWS
                 return $value['code'] !== $data['atividade_principal'];
             }), 'code'));
 
+            $empresa->quadroSocietarioAdministrativo()->whereNotIn('nome', collect($response->json('qsa'))->pluck('nome')->toArray())->delete();
+
             $empresa->quadroSocietarioAdministrativo()->upsert(
                 $response->json('qsa'),
                 ['cnpj', 'nome'],

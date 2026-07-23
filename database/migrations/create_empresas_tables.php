@@ -83,8 +83,7 @@ return new class extends Migration
         });
 
         Schema::create('simples', function (Blueprint $table) {
-            $table->uuid()->primary();
-            $table->string('cnpj', 14)->unique();
+            $table->string('cnpj', 14)->primary();
             $table->boolean('optante')->nullable();
             $table->date('data_opcao')->nullable();
             $table->date('data_exclusao')->nullable();
@@ -99,18 +98,22 @@ return new class extends Migration
 
         Schema::create('simples_historico', function (Blueprint $table) {
             $table->uuid()->primary();
-            $table->foreignUuid('simples_id')
-                ->constrained('simples', 'uuid')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
+            $table->string('cnpj', 14);
             $table->date('inicio');
             $table->date('fim')->nullable();
             $table->string('detalhamento');
+
+            $table->unique(['cnpj', 'inicio', 'fim']);
+
+            $table->foreign('cnpj')
+                ->references('cnpj')
+                ->on('empresas')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
         });
 
         Schema::create('simei', function (Blueprint $table) {
-            $table->uuid()->primary();
-            $table->string('cnpj', 14)->unique();
+            $table->string('cnpj', 14)->primary();
             $table->boolean('optante')->nullable();
             $table->date('data_opcao')->nullable();
             $table->date('data_exclusao')->nullable();
@@ -125,13 +128,18 @@ return new class extends Migration
 
         Schema::create('simei_historico', function (Blueprint $table) {
             $table->uuid()->primary();
-            $table->foreignUuid('simei_id')
-                ->constrained('simei', 'uuid')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
+            $table->string('cnpj', 14);
             $table->date('inicio');
             $table->date('fim')->nullable();
             $table->string('detalhamento');
+
+            $table->unique(['cnpj', 'inicio', 'fim']);
+
+            $table->foreign('cnpj')
+                ->references('cnpj')
+                ->on('empresas')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
         });
 
         Schema::create('inscricoes_estaduais', function (Blueprint $table) {
