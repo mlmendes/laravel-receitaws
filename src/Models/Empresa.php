@@ -32,7 +32,7 @@ class Empresa extends Model
 
     public function inscricoesEstaduais(): HasMany
     {
-        return $this->hasMany(InscricaoEstadual::class);
+        return $this->hasMany(InscricaoEstadual::class, 'cnpj', 'cnpj');
     }
 
     public function quadroSocietarioAdministrativo(): HasMany
@@ -42,7 +42,7 @@ class Empresa extends Model
 
     public function simei(): HasOne
     {
-        return $this->hasOne(Simei::class);
+        return $this->hasOne(Simei::class, 'cnpj', 'cnpj');
     }
 
     public function simeiHistorico(): HasManyThrough
@@ -52,7 +52,7 @@ class Empresa extends Model
 
     public function simples(): HasOne
     {
-        return $this->hasOne(Simples::class);
+        return $this->hasOne(Simples::class, 'cnpj', 'cnpj');
     }
 
     public function simplesHistorico(): HasManyThrough

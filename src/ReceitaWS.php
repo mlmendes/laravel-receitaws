@@ -113,12 +113,6 @@ class ReceitaWS
             ];
         }
 
-        $qsa = $response->json('qsa');
-
-        // TODO simei
-
-        // TODO simples
-
         DB::transaction(function () use ($response, $data, $atividades) {
             Atividade::query()->upsert($atividades, 'code', ['code', 'text']);
             Empresa::query()->upsert($data, 'cnpj', array_keys($data));
@@ -132,6 +126,18 @@ class ReceitaWS
                 $response->json('qsa'),
                 ['cnpj', 'nome'],
                 ['cnpj', 'nome', 'qual', 'pais_origem', 'nome_rep_legal', 'qual_rep_legal']
+            );
+
+            $empresa->simei()->upsert(
+                $response->json('simei'),
+                ['cnpj'],
+                ['cnpj', 'optante', 'data_opcao', 'data_exclusao', 'ultima_atualizacao']
+            );
+
+            $empresa->simples()->upsert(
+                $response->json('simples'),
+                ['cnpj'],
+                ['cnpj', 'optante', 'data_opcao', 'data_exclusao', 'ultima_atualizacao']
             );
         });
     }
