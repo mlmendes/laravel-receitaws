@@ -2,40 +2,97 @@
 
 namespace MLMendes\LaravelReceitaWS;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 use MLMendes\LaravelReceitaWS\Enum\Fallback;
+use MLMendes\LaravelReceitaWS\Models\Atividade;
+use MLMendes\LaravelReceitaWS\Models\Empresa;
 use MLMendes\LaravelReceitaWS\Models\ReceitaWS as ReceitaWSModel;
 
 class ReceitaWS
 {
     public function receitaFederal(ReceitaWSModel $receitaWS, string $cnpj, int $days = 0, Fallback $fallback = Fallback::CACHE_ON_ERROR)
     {
-        $response = Http::acceptJson()->withToken($receitaWS->token)
+        $response = Http::acceptJson()
+            ->withToken($receitaWS->token)
             ->get("https://receitaws.com.br/v1/cnpj/{$cnpj}/days/{$days}", [
                 'fallback' => $fallback->value,
             ]);
 
-        Log::debug($response);
+        $data = array_intersect_key($response->json(), array_flip([
+            'tipo',
+            'porte',
+            'nome',
+            'fantasia',
+            'natureza_juridica',
+            'logradouro',
+            'numero',
+            'bairro',
+            'municipio',
+            'uf',
+            'email',
+            'telefone',
+            'efr',
+            'situacao',
+            'motivo_situacao',
+            'situacao_especial',
+        ]));
+
+        $data['cnpj'] = preg_replace('/[^A-Z0-9]/', '', $response->json('cnpj'));
+        $data['cep'] = preg_replace('/\D/', '', $response->json('cep'));
+        $data['abertura'] = Carbon::createFromFormat('d/m/Y', $response->json('abertura'))->format('Y-m-d');
+        $data['data_situacao'] = Carbon::createFromFormat('d/m/Y', $response->json('data_situacao'))->format('Y-m-d');
+        if (!empty($data['data_situacao_especial'])) {
+            $data['data_situacao_especial'] = Carbon::createFromFormat('d/m/Y', $response->json('data_situacao_especial'))->format('Y-m-d');
+        }
+        $data['capital_social'] = (float)$response->json('capital_social');
+
+        $atividades = [];
+
+        foreach ($response->json('atividade_principal') as $atividade) {
+            $code = preg_replace('/\D/', '', $atividade['code']);
+            $atividades[] = [
+                'text' => $atividade['text'],
+                'code' => $code,
+            ];
+            $data['atividade_principal'] = $code;
+        }
+
+        foreach ($response->json('atividades_secundarias') as $atividade) {
+            $code = preg_replace('/\D/', '', $atividade['code']);
+            $atividades[] = [
+                'text' => $atividade['text'],
+                'code' => $code,
+            ];
+        }
+
+        Atividade::query()->upsert($atividades, 'code', ['code', 'text']);
+        Empresa::query()->upsert($data, 'cnpj', array_keys($data));
+        $empresa = Empresa::query()->find($data['cnpj']);
+        $empresa->atividadesSecundarias()->sync(array_filter($atividades, function ($key) {
+            return $key !== 'atividade_principal';
+        }, ARRAY_FILTER_USE_KEY));
+
+        // TODO simei
+
+        // TODO simples
     }
 
     public function cadastroDeContribuinte(ReceitaWSModel $receitaWS, string $cnpj, int $days = 0, Fallback $fallback = Fallback::CACHE_ON_ERROR)
     {
-        $response = Http::acceptJson()->withToken($receitaWS->token)
+        $response = Http::acceptJson()
+            ->withToken($receitaWS->token)
             ->get("https://receitaws.com.br/v1/ccc/{$cnpj}/days/{$days}", [
                 'fallback' => $fallback->value,
             ]);
-
-        Log::debug($response);
     }
 
     public function simplesNacional(ReceitaWSModel $receitaWS, string $cnpj, int $days = 0, Fallback $fallback = Fallback::CACHE_ON_ERROR)
     {
-        $response = Http::acceptJson()->withToken($receitaWS->token)
+        $response = Http::acceptJson()
+            ->withToken($receitaWS->token)
             ->get("https://receitaws.com.br/v1/simples/{$cnpj}/days/{$days}", [
                 'fallback' => $fallback->value,
             ]);
-
-        Log::debug($response);
     }
 }
