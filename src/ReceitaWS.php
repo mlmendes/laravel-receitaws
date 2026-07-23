@@ -27,7 +27,7 @@ class ReceitaWS
         }
 
         $getCharValue = function ($char) {
-            return ($char >= 'A') ? ord($char) - 48 : (int) $char;
+            return ($char >= 'A') ? ord($char) - 48 : (int)$char;
         };
 
         $checkDigit = function ($pos) use ($c, $getCharValue) {
@@ -89,10 +89,10 @@ class ReceitaWS
         $data['cep'] = preg_replace('/\D/', '', $response->json('cep'));
         $data['abertura'] = Carbon::createFromFormat('d/m/Y', $response->json('abertura'))->format('Y-m-d');
         $data['data_situacao'] = Carbon::createFromFormat('d/m/Y', $response->json('data_situacao'))->format('Y-m-d');
-        if (! empty($data['data_situacao_especial'])) {
+        if (!empty($data['data_situacao_especial'])) {
             $data['data_situacao_especial'] = Carbon::createFromFormat('d/m/Y', $response->json('data_situacao_especial'))->format('Y-m-d');
         }
-        $data['capital_social'] = (float) $response->json('capital_social');
+        $data['capital_social'] = (float)$response->json('capital_social');
 
         $atividades = [];
 
@@ -129,13 +129,10 @@ class ReceitaWS
             }), 'code'));
 
             $empresa->quadroSocietarioAdministrativo()->upsert(
-                array_map(function ($item) use ($data) {
-                    return [
-                        ...$item,
-                        'cnpj' => $data['cnpj'],
-                    ];
-                }, $response->json('qsa')), ['cnpj', 'nome'],
-                ['cnpj', 'nome', 'qual', 'pais_origem', 'nome_rep_legal', 'qual_rep_legal']);
+                $response->json('qsa'),
+                ['cnpj', 'nome'],
+                ['cnpj', 'nome', 'qual', 'pais_origem', 'nome_rep_legal', 'qual_rep_legal']
+            );
         });
     }
 
