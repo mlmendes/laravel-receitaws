@@ -37,7 +37,7 @@ class Empresa extends Model
 
     public function quadroSocietarioAdministrativo(): HasMany
     {
-        return $this->hasMany(QSA::class);
+        return $this->hasMany(QSA::class, 'cnpj', 'cnpj');
     }
 
     public function simei(): HasOne

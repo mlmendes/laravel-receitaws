@@ -9,7 +9,6 @@ use InvalidArgumentException;
 use MLMendes\LaravelReceitaWS\Enum\Fallback;
 use MLMendes\LaravelReceitaWS\Models\Atividade;
 use MLMendes\LaravelReceitaWS\Models\Empresa;
-use MLMendes\LaravelReceitaWS\Models\QSA;
 use MLMendes\LaravelReceitaWS\Models\ReceitaWS as ReceitaWSModel;
 use Throwable;
 
@@ -129,13 +128,14 @@ class ReceitaWS
                 return $value['code'] !== $data['atividade_principal'];
             }), 'code'));
 
-            QSA::query()->upsert(
+            $empresa->quadroSocietarioAdministrativo()->upsert(
                 array_map(function ($item) use ($data) {
-                    return $item['cnpj'] = $data['cnpj'];
-                }, $response->json('qsa')),
-                ['cnpj', 'nome'],
-                ['cnpj', 'nome', 'qual', 'pais_origem', 'nome_rep_legal', 'qual_rep_legal']
-            );
+                    return [
+                        ...$item,
+                        'cnpj' => $data['cnpj'],
+                    ];
+                }, $response->json('qsa')), ['cnpj', 'nome'],
+                ['cnpj', 'nome', 'qual', 'pais_origem', 'nome_rep_legal', 'qual_rep_legal']);
         });
     }
 
