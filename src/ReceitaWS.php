@@ -22,29 +22,26 @@ class ReceitaWS
     private function validateCNPJ(string $cnpj): string
     {
         $c = preg_replace('/[^A-Z0-9]/', '', strtoupper($cnpj));
-        if (strlen($c) !== 14 || preg_match('/^0{14}$/', $c)) {
-            throw new InvalidArgumentException('The given CNPJ is invalid.');
-        }
+        if (strlen($c) === 14 || ! preg_match('/^0{14}$/', $c)) {
+            $getCharValue = function ($char) {
+                return ($char >= 'A') ? ord($char) - 48 : (int) $char;
+            };
 
-        $getCharValue = function ($char) {
-            return ($char >= 'A') ? ord($char) - 48 : (int) $char;
-        };
+            $checkDigit = function ($pos) use ($c, $getCharValue) {
+                $b = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+                $sum = 0;
+                for ($i = 0; $i < $pos; $i++) {
+                    $sum += $getCharValue($c[$i]) * $b[$i + ($pos === 12)];
+                }
+                $n = $sum % 11;
 
-        $checkDigit = function ($pos) use ($c, $getCharValue) {
-            $b = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-            $sum = 0;
-            for ($i = 0; $i < $pos; $i++) {
-                $sum += $getCharValue($c[$i]) * $b[$i + ($pos === 12)];
+                return $c[$pos] == ($n < 2 ? 0 : 11 - $n);
+            };
+
+            if ($checkDigit(12) && $checkDigit(13)) {
+                return $c;
             }
-            $n = $sum % 11;
-
-            return $c[$pos] == ($n < 2 ? 0 : 11 - $n);
-        };
-
-        if ($checkDigit(12) && $checkDigit(13)) {
-            return $c;
         }
-
         throw new InvalidArgumentException('The given CNPJ is invalid.');
     }
 
