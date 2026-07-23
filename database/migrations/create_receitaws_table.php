@@ -12,6 +12,9 @@ return new class extends Migration
             $table->uuid()->primary();
             $table->string('name')->unique();
             $table->string('token')->unique();
+            $table->string('cnpj_recurrence')->nullable();
+            $table->string('ccc_recurrence')->nullable();
+            $table->string('simples_recurrence')->nullable();
             $table->timestamps();
         });
     }
