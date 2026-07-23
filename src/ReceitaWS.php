@@ -5,6 +5,7 @@ namespace MLMendes\LaravelReceitaWS;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use InvalidArgumentException;
 use MLMendes\LaravelReceitaWS\Enum\Fallback;
 use MLMendes\LaravelReceitaWS\Models\Atividade;
@@ -165,5 +166,12 @@ class ReceitaWS
             ->get("https://receitaws.com.br/v1/simples/{$cnpj}/days/{$days}", [
                 'fallback' => $fallback->value,
             ]);
+
+        $empresa = Empresa::query()->find($cnpj);
+
+        Log::debug($response->json());
+        Log::debug($response->json()->simples);
+        Log::debug($response->json()->simples->historico->periodos_anteriores);
+        Log::debug($response->json()->simei);
     }
 }
