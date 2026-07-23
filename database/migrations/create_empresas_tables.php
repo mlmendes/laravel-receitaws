@@ -85,10 +85,10 @@ return new class extends Migration
         Schema::create('simples', function (Blueprint $table) {
             $table->uuid()->primary();
             $table->string('cnpj', 14)->unique();
-            $table->boolean('optante');
-            $table->date('data_opcao');
-            $table->date('data_exclusao');
-            $table->timestamp('ultima_atualizacao');
+            $table->boolean('optante')->nullable();
+            $table->date('data_opcao')->nullable();
+            $table->date('data_exclusao')->nullable();
+            $table->timestamp('ultima_atualizacao')->nullable();
 
             $table->foreign('cnpj')
                 ->references('cnpj')
@@ -111,10 +111,10 @@ return new class extends Migration
         Schema::create('simei', function (Blueprint $table) {
             $table->uuid()->primary();
             $table->string('cnpj', 14)->unique();
-            $table->boolean('optante');
+            $table->boolean('optante')->nullable();
             $table->date('data_opcao')->nullable();
             $table->date('data_exclusao')->nullable();
-            $table->timestamp('ultima_atualizacao');
+            $table->timestamp('ultima_atualizacao')->nullable();
 
             $table->foreign('cnpj')
                 ->references('cnpj')
