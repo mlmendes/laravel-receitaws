@@ -16,9 +16,8 @@ use Throwable;
 class ReceitaWS
 {
     /**
-     * @param string $cnpj
-     * @return string
      * @throws InvalidArgumentException
+     *
      * @author Bruno Constantino
      */
     private function validateCNPJ(string $cnpj): string
@@ -29,7 +28,7 @@ class ReceitaWS
         }
 
         $getCharValue = function ($char) {
-            return ($char >= 'A') ? ord($char) - 48 : (int)$char;
+            return ($char >= 'A') ? ord($char) - 48 : (int) $char;
         };
 
         $checkDigit = function ($pos) use ($c, $getCharValue) {
@@ -39,6 +38,7 @@ class ReceitaWS
                 $sum += $getCharValue($c[$i]) * $b[$i + ($pos === 12)];
             }
             $n = $sum % 11;
+
             return $c[$pos] == ($n < 2 ? 0 : 11 - $n);
         };
 
@@ -57,7 +57,9 @@ class ReceitaWS
     {
         $cnpj = $this->validateCNPJ($cnpj);
 
-        if ($days < 0) throw new InvalidArgumentException('The days argument must be greater than or equal to zero.');
+        if ($days < 0) {
+            throw new InvalidArgumentException('The days argument must be greater than or equal to zero.');
+        }
 
         $response = Http::acceptJson()
             ->withToken($receitaWS->token)
@@ -88,10 +90,10 @@ class ReceitaWS
         $data['cep'] = preg_replace('/\D/', '', $response->json('cep'));
         $data['abertura'] = Carbon::createFromFormat('d/m/Y', $response->json('abertura'))->format('Y-m-d');
         $data['data_situacao'] = Carbon::createFromFormat('d/m/Y', $response->json('data_situacao'))->format('Y-m-d');
-        if (!empty($data['data_situacao_especial'])) {
+        if (! empty($data['data_situacao_especial'])) {
             $data['data_situacao_especial'] = Carbon::createFromFormat('d/m/Y', $response->json('data_situacao_especial'))->format('Y-m-d');
         }
-        $data['capital_social'] = (float)$response->json('capital_social');
+        $data['capital_social'] = (float) $response->json('capital_social');
 
         $atividades = [];
 
