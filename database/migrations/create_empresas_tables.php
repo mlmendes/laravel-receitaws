@@ -166,8 +166,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('atividades');
-        Schema::dropIfExists('empresas');
         Schema::dropIfExists('atividades_secundarias');
         Schema::dropIfExists('qsa');
         Schema::dropIfExists('simples');
@@ -175,5 +173,7 @@ return new class extends Migration
         Schema::dropIfExists('simei');
         Schema::dropIfExists('simei_historico');
         Schema::dropIfExists('inscricoes_estaduais');
+        Schema::dropIfExists('empresas');
+        Schema::dropIfExists('atividades');
     }
 };
