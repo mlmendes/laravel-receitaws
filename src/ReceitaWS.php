@@ -123,9 +123,9 @@ class ReceitaWS
             Empresa::query()->upsert($data, 'cnpj', array_keys($data));
             $empresa = Empresa::query()->find($data['cnpj']);
 
-            $empresa->atividadesSecundarias()->sync(array_filter($atividades, function ($key) {
-                return $key !== 'atividade_principal';
-            }, ARRAY_FILTER_USE_KEY));
+            $empresa->atividadesSecundarias()->sync(array_filter($atividades, function ($value) use ($data) {
+                return $value['code'] !== $data['atividade_principal'];
+            }));
 
             QSA::query()->upsert(
                 array_map(function ($item) use ($data) {
