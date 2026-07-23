@@ -130,7 +130,9 @@ class ReceitaWS
                 ['cnpj', 'nome', 'qual', 'pais_origem', 'nome_rep_legal', 'qual_rep_legal']
             );
 
-            if (! empty(array_filter($response->json('simei'), fn ($value) => $value !== null))) {
+            if (empty(array_filter($response->json('simei'), fn ($value) => $value !== null))) {
+                $empresa->simei()->delete();
+            } else {
                 $empresa->simei()->upsert(
                     $response->json('simei'),
                     ['cnpj'],
@@ -138,7 +140,9 @@ class ReceitaWS
                 );
             }
 
-            if (! empty(array_filter($response->json('simples'), fn ($value) => $value !== null))) {
+            if (empty(array_filter($response->json('simples'), fn ($value) => $value !== null))) {
+                $empresa->simples()->delete();
+            } else {
                 $empresa->simples()->upsert(
                     $response->json('simples'),
                     ['cnpj'],
