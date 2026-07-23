@@ -128,17 +128,21 @@ class ReceitaWS
                 ['cnpj', 'nome', 'qual', 'pais_origem', 'nome_rep_legal', 'qual_rep_legal']
             );
 
-            $empresa->simei()->upsert(
-                $response->json('simei'),
-                ['cnpj'],
-                ['cnpj', 'optante', 'data_opcao', 'data_exclusao', 'ultima_atualizacao']
-            );
+            if (! empty(array_filter($response->json('simei'), fn ($value) => $value !== null))) {
+                $empresa->simei()->upsert(
+                    $response->json('simei'),
+                    ['cnpj'],
+                    ['cnpj', 'optante', 'data_opcao', 'data_exclusao', 'ultima_atualizacao']
+                );
+            }
 
-            $empresa->simples()->upsert(
-                $response->json('simples'),
-                ['cnpj'],
-                ['cnpj', 'optante', 'data_opcao', 'data_exclusao', 'ultima_atualizacao']
-            );
+            if (! empty(array_filter($response->json('simples'), fn ($value) => $value !== null))) {
+                $empresa->simples()->upsert(
+                    $response->json('simples'),
+                    ['cnpj'],
+                    ['cnpj', 'optante', 'data_opcao', 'data_exclusao', 'ultima_atualizacao']
+                );
+            }
         });
     }
 
