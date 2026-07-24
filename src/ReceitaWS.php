@@ -102,11 +102,12 @@ class ReceitaWS
                 if ((int) $telefone[2] >= 6) {
                     $telefone = substr($telefone, 0, 2).'9'.substr($telefone, 2, 8);
                 }
-                $telefones[] = [
-                    'cnpj' => $cnpj,
-                    'telefone' => '55'.$telefone,
-                ];
             }
+
+            $telefones[] = [
+                'cnpj' => $cnpj,
+                'telefone' => '55'.$telefone,
+            ];
         }
 
         foreach ($response->json('atividade_principal') as $atividade) {
