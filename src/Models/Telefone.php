@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['cnpj', 'telefone'])]
+#[Fillable(['cnpj', 'numero'])]
 #[Table(key: 'uuid', keyType: 'string', incrementing: false)]
 #[WithoutTimestamps]
 class Telefone extends Model
