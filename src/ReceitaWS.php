@@ -182,23 +182,25 @@ class ReceitaWS
             throw new RuntimeException('Invalid API response.');
         }
 
-        $empresa = Empresa::query()->find($cnpj);
+        DB::transaction(function () use ($response, $cnpj) {
+            $empresa = Empresa::query()->find($cnpj);
 
-        $empresa->inscricoesEstaduais()->upsert(
-            array_map(function ($value) use ($cnpj) {
-                $value['cnpj'] = $cnpj;
-                if (! empty($value['data_situacao'])) {
-                    $value['data_situacao'] = Carbon::createFromFormat('d/m/Y', $value['data_situacao'])->format('Y-m-d');
-                }
-                if (! empty($value['data_atualizacao'])) {
-                    $value['data_atualizacao'] = Carbon::createFromFormat('d/m/Y', $value['data_atualizacao'])->format('Y-m-d');
-                }
+            $empresa->inscricoesEstaduais()->upsert(
+                array_map(function ($value) use ($cnpj) {
+                    $value['cnpj'] = $cnpj;
+                    if (! empty($value['data_situacao'])) {
+                        $value['data_situacao'] = Carbon::createFromFormat('d/m/Y', $value['data_situacao'])->format('Y-m-d');
+                    }
+                    if (! empty($value['data_atualizacao'])) {
+                        $value['data_atualizacao'] = Carbon::createFromFormat('d/m/Y', $value['data_atualizacao'])->format('Y-m-d');
+                    }
 
-                return $value;
-            }, $response->json('registros')),
-            ['uf', 'ie'],
-            ['cnpj', 'uf', 'ie', 'tipo_ie', 'situacao_ie', 'data_situacao', 'regime_icms', 'situacao_cnpj', 'data_atualizacao']
-        );
+                    return $value;
+                }, $response->json('registros')),
+                ['uf', 'ie'],
+                ['cnpj', 'uf', 'ie', 'tipo_ie', 'situacao_ie', 'data_situacao', 'regime_icms', 'situacao_cnpj', 'data_atualizacao']
+            );
+        });
     }
 
     public function simplesNacional(ReceitaWSModel $receitaWS, string $cnpj, int $days = 0, Fallback $fallback = Fallback::CACHE_ON_ERROR)
@@ -211,46 +213,46 @@ class ReceitaWS
                 'fallback' => $fallback->value,
             ]);
 
-        $json = json_decode(json_encode($response->json()));
-
-        if ($this->validateCNPJ($json->cnpj) !== $cnpj) {
+        if ($this->validateCNPJ($response->json('cnpj')) !== $cnpj) {
             throw new RuntimeException('Invalid API response.');
         }
 
-        $empresa = Empresa::query()->find($cnpj);
+        DB::transaction(function () use ($response, $cnpj) {
+            $empresa = Empresa::query()->find($cnpj);
 
-        $empresa->simples()->upsert([
-            'cnpj' => $cnpj,
-            'optante' => $json->simples->optante,
-            'data_opcao' => $json->simples->data_opcao,
-        ], 'cnpj', ['cnpj', 'optante', 'data_opcao']);
+            $empresa->simples()->upsert([
+                'cnpj' => $cnpj,
+                'optante' => $response->json('simples')['optante'],
+                'data_opcao' => $response->json('simples')['data_opcao'],
+            ], 'cnpj', ['cnpj', 'optante', 'data_opcao']);
 
-        $empresa->simplesHistorico()->upsert(
-            array_map(function ($value) use ($cnpj) {
-                return [
-                    'cnpj' => $cnpj,
-                    ...$value,
-                ];
-            }, $response->json('simples')['historico']['periodos_anteriores']),
-            ['cnpj', 'inicio', 'fim'],
-            ['cnpj', 'inicio', 'fim', 'detalhamento']
-        );
+            $empresa->simplesHistorico()->upsert(
+                array_map(function ($value) use ($cnpj) {
+                    return [
+                        'cnpj' => $cnpj,
+                        ...$value,
+                    ];
+                }, $response->json('simples')['historico']['periodos_anteriores']),
+                ['cnpj', 'inicio', 'fim'],
+                ['cnpj', 'inicio', 'fim', 'detalhamento']
+            );
 
-        $empresa->simei()->upsert([
-            'cnpj' => $cnpj,
-            'optante' => $json->simei->optante,
-            'data_opcao' => $json->simei->data_opcao,
-        ], 'cnpj', ['cnpj', 'optante', 'data_opcao']);
+            $empresa->simei()->upsert([
+                'cnpj' => $cnpj,
+                'optante' => $response->json('simei')['optante'],
+                'data_opcao' => $response->json('simei')['data_opcao'],
+            ], 'cnpj', ['cnpj', 'optante', 'data_opcao']);
 
-        $empresa->simeiHistorico()->upsert(
-            array_map(function ($value) use ($cnpj) {
-                return [
-                    'cnpj' => $cnpj,
-                    ...$value,
-                ];
-            }, $response->json('simei')['historico']['periodos_anteriores']),
-            ['cnpj', 'inicio', 'fim'],
-            ['cnpj', 'inicio', 'fim', 'detalhamento']
-        );
+            $empresa->simeiHistorico()->upsert(
+                array_map(function ($value) use ($cnpj) {
+                    return [
+                        'cnpj' => $cnpj,
+                        ...$value,
+                    ];
+                }, $response->json('simei')['historico']['periodos_anteriores']),
+                ['cnpj', 'inicio', 'fim'],
+                ['cnpj', 'inicio', 'fim', 'detalhamento']
+            );
+        });
     }
 }
