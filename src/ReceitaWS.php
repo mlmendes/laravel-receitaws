@@ -11,6 +11,7 @@ use MLMendes\LaravelReceitaWS\Enum\Fallback;
 use MLMendes\LaravelReceitaWS\Models\Atividade;
 use MLMendes\LaravelReceitaWS\Models\Empresa;
 use MLMendes\LaravelReceitaWS\Models\ReceitaWS as ReceitaWSModel;
+use RuntimeException;
 use Throwable;
 
 class ReceitaWS
@@ -131,8 +132,19 @@ class ReceitaWS
             if (empty(array_filter($response->json('simei'), fn ($value) => $value !== null))) {
                 $empresa->simei()->delete();
             } else {
+                $data = $response->json('simei');
+
+                if (! empty($data['data_opcao'])) {
+                    $data['data_opcao'] = Carbon::createFromFormat('d/m/Y', $data['data_opcao'])->format('Y-m-d');
+                }
+                if (! empty($data['data_exclusao'])) {
+                    $data['data_exclusao'] = Carbon::createFromFormat('d/m/Y', $data['data_exclusao'])->format('Y-m-d');
+                }
+
+                Log::debug($data);
+
                 $empresa->simei()->upsert(
-                    $response->json('simei'),
+                    $data,
                     ['cnpj'],
                     ['cnpj', 'optante', 'data_opcao', 'data_exclusao', 'ultima_atualizacao']
                 );
@@ -141,8 +153,17 @@ class ReceitaWS
             if (empty(array_filter($response->json('simples'), fn ($value) => $value !== null))) {
                 $empresa->simples()->delete();
             } else {
+                $data = $response->json('simples');
+
+                if (! empty($data['data_opcao'])) {
+                    $data['data_opcao'] = Carbon::createFromFormat('d/m/Y', $data['data_opcao'])->format('Y-m-d');
+                }
+                if (! empty($data['data_exclusao'])) {
+                    $data['data_exclusao'] = Carbon::createFromFormat('d/m/Y', $data['data_exclusao'])->format('Y-m-d');
+                }
+
                 $empresa->simples()->upsert(
-                    $response->json('simples'),
+                    $data,
                     ['cnpj'],
                     ['cnpj', 'optante', 'data_opcao', 'data_exclusao', 'ultima_atualizacao']
                 );
@@ -161,17 +182,54 @@ class ReceitaWS
 
     public function simplesNacional(ReceitaWSModel $receitaWS, string $cnpj, int $days = 0, Fallback $fallback = Fallback::CACHE_ON_ERROR)
     {
+        $cnpj = $this->validateCNPJ($cnpj);
+
         $response = Http::acceptJson()
             ->withToken($receitaWS->token)
             ->get("https://receitaws.com.br/v1/simples/{$cnpj}/days/{$days}", [
                 'fallback' => $fallback->value,
             ]);
 
+        $json = json_decode(json_encode($response->json()));
+
+        if ($this->validateCNPJ($json->cnpj) !== $cnpj) {
+            throw new RuntimeException('Invalid API response.');
+        }
+
         $empresa = Empresa::query()->find($cnpj);
 
-        Log::debug($response->json());
-        Log::debug($response->json()->simples);
-        Log::debug($response->json()->simples->historico->periodos_anteriores);
-        Log::debug($response->json()->simei);
+        $empresa->simples()->upsert([
+            'cnpj' => $cnpj,
+            'optante' => $json->simples->optante,
+            'data_opcao' => $json->simples->data_opcao,
+        ], 'cnpj', ['cnpj', 'optante', 'data_opcao']);
+
+        $empresa->simplesHistorico()->upsert(
+            array_map(function ($value) use ($cnpj) {
+                return [
+                    'cnpj' => $cnpj,
+                    ...$value,
+                ];
+            }, $response->json('simples')['historico']['periodos_anteriores']),
+            ['cnpj', 'inicio', 'fim'],
+            ['cnpj', 'inicio', 'fim', 'detalhamento']
+        );
+
+        $empresa->simei()->upsert([
+            'cnpj' => $cnpj,
+            'optante' => $json->simei->optante,
+            'data_opcao' => $json->simei->data_opcao,
+        ], 'cnpj', ['cnpj', 'optante', 'data_opcao']);
+
+        $empresa->simeiHistorico()->upsert(
+            array_map(function ($value) use ($cnpj) {
+                return [
+                    'cnpj' => $cnpj,
+                    ...$value,
+                ];
+            }, $response->json('simei')['historico']['periodos_anteriores']),
+            ['cnpj', 'inicio', 'fim'],
+            ['cnpj', 'inicio', 'fim', 'detalhamento']
+        );
     }
 }
