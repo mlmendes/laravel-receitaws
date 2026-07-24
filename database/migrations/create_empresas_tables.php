@@ -28,7 +28,6 @@ return new class extends Migration
             $table->string('municipio');
             $table->string('uf');
             $table->string('email');
-            $table->string('telefone');
             $table->string('efr');
             $table->string('situacao');
             $table->date('data_situacao');
@@ -44,6 +43,20 @@ return new class extends Migration
                 ->on('atividades')
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
+        });
+
+        Schema::create('telefones', function (Blueprint $table) {
+            $table->uuid()->primary();
+            $table->string('cnpj', 14);
+            $table->string('numero', 13);
+
+            $table->unique(['cnpj', 'numero']);
+
+            $table->foreign('cnpj')
+                ->references('cnpj')
+                ->on('empresas')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
         });
 
         Schema::create('atividades_secundarias', function (Blueprint $table) {
@@ -173,6 +186,7 @@ return new class extends Migration
         Schema::dropIfExists('simei');
         Schema::dropIfExists('simei_historico');
         Schema::dropIfExists('inscricoes_estaduais');
+        Schema::dropIfExists('telefones');
         Schema::dropIfExists('empresas');
         Schema::dropIfExists('atividades');
     }

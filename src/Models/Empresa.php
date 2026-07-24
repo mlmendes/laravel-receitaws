@@ -58,4 +58,9 @@ class Empresa extends Model
     {
         return $this->hasMany(SimplesHistorico::class, 'cnpj', 'cnpj');
     }
+
+    public function telefones(): HasMany
+    {
+        return $this->hasMany(Telefone::class, 'cnpj', 'cnpj');
+    }
 }
