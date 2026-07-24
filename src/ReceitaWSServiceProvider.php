@@ -2,6 +2,7 @@
 
 namespace MLMendes\LaravelReceitaWS;
 
+use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -13,7 +14,11 @@ class ReceitaWSServiceProvider extends PackageServiceProvider
             ->hasMigrations([
                 'create_empresas_tables',
                 'create_receitaws_table',
-            ]);
+            ])
+            ->hasInstallCommand(function (InstallCommand $command) {
+                $command->publishMigrations()
+                    ->askToStarRepoOnGitHub('mlmendes/laravel-receitaws');
+            });
     }
 
     public function packageRegistered()
