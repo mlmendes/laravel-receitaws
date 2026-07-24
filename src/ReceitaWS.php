@@ -5,7 +5,6 @@ namespace MLMendes\LaravelReceitaWS;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 use InvalidArgumentException;
 use MLMendes\LaravelReceitaWS\Enum\Fallback;
 use MLMendes\LaravelReceitaWS\Models\Atividade;
@@ -141,8 +140,6 @@ class ReceitaWS
                     $data['data_exclusao'] = Carbon::createFromFormat('d/m/Y', $data['data_exclusao'])->format('Y-m-d');
                 }
 
-                Log::debug($data);
-
                 $empresa->simei()->upsert(
                     $data,
                     ['cnpj'],
@@ -173,11 +170,35 @@ class ReceitaWS
 
     public function cadastroDeContribuinte(ReceitaWSModel $receitaWS, string $cnpj, int $days = 0, Fallback $fallback = Fallback::CACHE_ON_ERROR)
     {
+        $cnpj = $this->validateCNPJ($cnpj);
+
         $response = Http::acceptJson()
             ->withToken($receitaWS->token)
             ->get("https://receitaws.com.br/v1/ccc/{$cnpj}/days/{$days}", [
                 'fallback' => $fallback->value,
             ]);
+
+        if ($this->validateCNPJ($response->json('cnpj')) !== $cnpj) {
+            throw new RuntimeException('Invalid API response.');
+        }
+
+        $empresa = Empresa::query()->find($cnpj);
+
+        $empresa->inscricoesEstaduais()->upsert(
+            array_map(function ($value) use ($cnpj) {
+                $value['cnpj'] = $cnpj;
+                if (! empty($value['data_situacao'])) {
+                    $value['data_situacao'] = Carbon::createFromFormat('d/m/Y', $value['data_situacao'])->format('Y-m-d');
+                }
+                if (! empty($value['data_atualizacao'])) {
+                    $value['data_atualizacao'] = Carbon::createFromFormat('d/m/Y', $value['data_atualizacao'])->format('Y-m-d');
+                }
+
+                return $value;
+            }, $response->json('registros')),
+            ['uf', 'ie'],
+            ['cnpj', 'uf', 'ie', 'tipo_ie', 'situacao_ie', 'data_situacao', 'regime_icms', 'situacao_cnpj', 'data_atualizacao']
+        );
     }
 
     public function simplesNacional(ReceitaWSModel $receitaWS, string $cnpj, int $days = 0, Fallback $fallback = Fallback::CACHE_ON_ERROR)
