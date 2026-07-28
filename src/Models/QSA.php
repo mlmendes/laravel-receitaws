@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\WithoutTimestamps;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use MLMendes\LaravelReceitaWS\LaravelReceitaWSRegistrar;
 
 #[Fillable(['cnpj', 'nome', 'qual', 'pais_origem', 'nome_rep_legal', 'qual_rep_legal'])]
 #[Table(name: 'qsa', key: 'uuid', keyType: 'string', incrementing: false)]
@@ -18,6 +19,10 @@ class QSA extends Model
 
     public function empresa(): BelongsTo
     {
-        return $this->belongsTo(Empresa::class);
+        return $this->belongsTo(
+            app(LaravelReceitaWSRegistrar::class)->models['empresa'],
+            app(LaravelReceitaWSRegistrar::class)->cnpjColumn,
+            app(LaravelReceitaWSRegistrar::class)->cnpjColumn
+        );
     }
 }

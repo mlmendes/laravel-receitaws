@@ -52,7 +52,7 @@ class LaravelReceitaWS
      * @throws InvalidArgumentException
      * @throws Throwable
      */
-    public function receitaFederal(ReceitaWSModel $receitaWS, string $cnpj, int $days = 0, Fallback $fallback = Fallback::CACHE_ON_ERROR)
+    public function receitaFederal(ReceitaWSModel $receitaWS, string $cnpj, int $days = 0, Fallback $fallback = Fallback::CACHE_ON_ERROR): void
     {
         $cnpj = $this->validateCNPJ($cnpj);
 
@@ -108,7 +108,7 @@ class LaravelReceitaWS
 
             $telefones[] = [
                 'cnpj' => $cnpj,
-                'telefone' => '55'.$telefone,
+                'numero' => '55'.$telefone,
             ];
         }
 
@@ -134,7 +134,7 @@ class LaravelReceitaWS
             Empresa::query()->upsert($data, 'cnpj', array_keys($data));
             $empresa = Empresa::query()->find($data['cnpj']);
 
-            $empresa->telefones()->upsert($telefones, ['cnpj', 'telefone'], ['cnpj', 'telefone']);
+            $empresa->telefones()->upsert($telefones, ['cnpj', 'numero'], ['cnpj', 'numero']);
 
             $empresa->atividadesSecundarias()->sync(array_column(array_filter($atividades, function ($value) use ($data) {
                 return $value['code'] !== $data['atividade_principal'];
@@ -188,7 +188,7 @@ class LaravelReceitaWS
         });
     }
 
-    public function cadastroDeContribuinte(ReceitaWSModel $receitaWS, string $cnpj, int $days = 0, Fallback $fallback = Fallback::CACHE_ON_ERROR)
+    public function cadastroDeContribuinte(ReceitaWSModel $receitaWS, string $cnpj, int $days = 0, Fallback $fallback = Fallback::CACHE_ON_ERROR): void
     {
         $cnpj = $this->validateCNPJ($cnpj);
 
@@ -223,7 +223,7 @@ class LaravelReceitaWS
         });
     }
 
-    public function simplesNacional(ReceitaWSModel $receitaWS, string $cnpj, int $days = 0, Fallback $fallback = Fallback::CACHE_ON_ERROR)
+    public function simplesNacional(ReceitaWSModel $receitaWS, string $cnpj, int $days = 0, Fallback $fallback = Fallback::CACHE_ON_ERROR): void
     {
         $cnpj = $this->validateCNPJ($cnpj);
 

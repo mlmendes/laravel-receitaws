@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\WithoutTimestamps;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use MLMendes\LaravelReceitaWS\LaravelReceitaWSRegistrar;
 
 #[Fillable(['code', 'text'])]
 #[Table(key: 'code', keyType: 'string', incrementing: false)]
@@ -19,7 +20,7 @@ class Atividade extends Model
      */
     public function principalEmpresas(): HasMany
     {
-        return $this->hasMany(Empresa::class, 'atividade_principal');
+        return $this->hasMany(app(LaravelReceitaWSRegistrar::class)->models['empresa'], 'atividade_principal');
     }
 
     /**
@@ -27,6 +28,6 @@ class Atividade extends Model
      */
     public function secundariaEmpresas(): BelongsToMany
     {
-        return $this->belongsToMany(Empresa::class, 'atividades_secundarias', 'atividade_code', 'cnpj');
+        return $this->belongsToMany(app(LaravelReceitaWSRegistrar::class)->models['empresa'], 'atividades_secundarias', 'atividade_code', 'cnpj');
     }
 }

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Attributes\WithoutTimestamps;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use MLMendes\LaravelReceitaWS\LaravelReceitaWSRegistrar;
 
 #[Fillable(['cnpj', 'optante', 'data_opcao', 'data_exclusao', 'ultima_atualizacao'])]
 #[Table(name: 'simei', key: 'cnpj', keyType: 'string', incrementing: false)]
@@ -15,6 +16,10 @@ class Simei extends Model
 {
     public function empresa(): BelongsTo
     {
-        return $this->belongsTo(Empresa::class, 'cnpj', 'cnpj');
+        return $this->belongsTo(
+            app(LaravelReceitaWSRegistrar::class)->models['empresa'],
+            app(LaravelReceitaWSRegistrar::class)->cnpjColumn,
+            app(LaravelReceitaWSRegistrar::class)->cnpjColumn
+        );
     }
 }

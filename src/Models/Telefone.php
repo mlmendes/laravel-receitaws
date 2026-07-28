@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\WithoutTimestamps;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use MLMendes\LaravelReceitaWS\LaravelReceitaWSRegistrar;
 
 #[Fillable(['cnpj', 'numero'])]
 #[Table(key: 'uuid', keyType: 'string', incrementing: false)]
@@ -18,6 +19,10 @@ class Telefone extends Model
 
     public function empresa(): BelongsTo
     {
-        return $this->belongsTo(Empresa::class, 'cnpj', 'cnpj');
+        return $this->belongsTo(
+            app(LaravelReceitaWSRegistrar::class)->models['empresa'],
+            app(LaravelReceitaWSRegistrar::class)->cnpjColumn,
+            app(LaravelReceitaWSRegistrar::class)->cnpjColumn
+        );
     }
 }

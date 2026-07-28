@@ -33,7 +33,7 @@ return [
         'simples_historico' => 'simples_historico',
         'simei' => 'simei',
         'simei_historico' => 'simei_historico',
-        'inscricao_estaduals' => 'inscricoes_estaduais',
+        'inscricoes_estaduais' => 'inscricoes_estaduais',
     ],
     'column_names' => [
 
