@@ -9,6 +9,7 @@ use MLMendes\LaravelReceitaWS\Models\ReceitaWSApiConfig;
 use MLMendes\LaravelReceitaWS\Models\Simei;
 use MLMendes\LaravelReceitaWS\Models\Simples;
 use MLMendes\LaravelReceitaWS\Tests\Fixtures\ReceitaWSApiFixture;
+
 use function Pest\Laravel\assertModelExists;
 use function PHPUnit\Framework\assertNotEmpty;
 
@@ -19,12 +20,12 @@ test('Receita Federal method creates all empresa related models', function () {
 
     $api = ReceitaWSApiConfig::factory()->create();
 
-    Http::fake(["https://receitaws.com.br/v1/cnpj/*" => Http::response($data)]);
+    Http::fake(['https://receitaws.com.br/v1/cnpj/*' => Http::response($data)]);
 
     LaravelReceitaWS::receitaFederal($api, $cnpj);
 
     Http::assertSent(function ($request) use ($api) {
-        return $request->hasHeader('Authorization', 'Bearer ' . $api->token);
+        return $request->hasHeader('Authorization', 'Bearer '.$api->token);
     });
 
     $unformattedCnpj = preg_replace('/\D/', '', $cnpj);
@@ -69,7 +70,7 @@ it('throws an exception if the CNPJ is invalid', function () {
 
     $api = ReceitaWSApiConfig::factory()->create();
 
-    Http::fake(["https://receitaws.com.br/v1/cnpj/*" => Http::response([
+    Http::fake(['https://receitaws.com.br/v1/cnpj/*' => Http::response([
         'status' => 'ERROR',
         'message' => 'CNPJ inválido',
     ])]);
@@ -90,7 +91,7 @@ it('throws an exception if the days number is less than zero', function () {
 
     $api = ReceitaWSApiConfig::factory()->create();
 
-    Http::fake(["https://receitaws.com.br/v1/cnpj/*" => Http::response($data)]);
+    Http::fake(['https://receitaws.com.br/v1/cnpj/*' => Http::response($data)]);
 
     try {
         LaravelReceitaWS::receitaFederal($api, $cnpj, days: -1);

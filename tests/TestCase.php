@@ -14,7 +14,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn(string $modelName) => 'MLMendes\\LaravelReceitaWS\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
+            fn (string $modelName) => 'MLMendes\\LaravelReceitaWS\\Database\\Factories\\'.class_basename($modelName).'Factory'
         );
     }
 
@@ -28,9 +28,9 @@ class TestCase extends Orchestra
     public function getEnvironmentSetUp($app): void
     {
         config()->set('database.default', 'testing');
-        config()->set('app.key', 'base64:' . base64_encode(random_bytes(32)));
+        config()->set('app.key', 'base64:'.base64_encode(random_bytes(32)));
 
-        foreach (File::allFiles(__DIR__ . '/../database/migrations') as $migration) {
+        foreach (File::allFiles(__DIR__.'/../database/migrations') as $migration) {
             (include $migration->getRealPath())->up();
         }
     }

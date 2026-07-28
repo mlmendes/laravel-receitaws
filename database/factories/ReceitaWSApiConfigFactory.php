@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use MLMendes\LaravelReceitaWS\Models\ReceitaWSApiConfig;
 
-
 class ReceitaWSApiConfigFactory extends Factory
 {
     protected $model = ReceitaWSApiConfig::class;
