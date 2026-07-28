@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace MLMendes\LaravelReceitaWS\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class LaravelReceitaWSCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'laravel-receitaws';
 
     public $description = 'My command';
 

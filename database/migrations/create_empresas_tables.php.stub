@@ -1,0 +1,198 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        $tableNames = config('receitaws.table_names');
+        $columnNames = config('receitaws.column_names');
+
+        Schema::create($tableNames['atividades'], function (Blueprint $table) {
+            $table->string('code', 7)->primary();
+            $table->string('text');
+        });
+
+        Schema::create($tableNames['empresas'], function (Blueprint $table) use ($columnNames) {
+            $table->string($columnNames['cnpj'], 14)->primary();
+            $table->enum('tipo', ['MATRIZ', 'FILIAL']);
+            $table->string('porte');
+            $table->string('nome');
+            $table->string('fantasia');
+            $table->date('abertura');
+            $table->string('natureza_juridica');
+            $table->string('logradouro');
+            $table->string('numero');
+            $table->string('cep');
+            $table->string('bairro');
+            $table->string('municipio');
+            $table->string('uf');
+            $table->string('email');
+            $table->string('efr');
+            $table->string('situacao');
+            $table->date('data_situacao');
+            $table->string('motivo_situacao');
+            $table->string('situacao_especial');
+            $table->date('data_situacao_especial')->nullable();
+            $table->decimal('capital_social');
+            $table->string('atividade_principal', 7);
+            $table->softDeletes();
+
+            $table->foreign('atividade_principal')
+                ->references('code')
+                ->on('atividades')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
+        });
+
+        Schema::create($tableNames['telefones'], function (Blueprint $table) use ($columnNames) {
+            $table->uuid()->primary();
+            $table->string($columnNames['cnpj'], 14);
+            $table->string('numero', 13);
+
+            $table->unique([$columnNames['cnpj'], 'numero']);
+
+            $table->foreign($columnNames['cnpj'])
+                ->references($columnNames['cnpj'])
+                ->on('empresas')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+        });
+
+        Schema::create($tableNames['atividades_secundarias'], function (Blueprint $table) use ($columnNames) {
+            $table->string($columnNames['cnpj'], 14);
+            $table->string('atividade_code', 7);
+
+            $table->foreign($columnNames['cnpj'])
+                ->references($columnNames['cnpj'])
+                ->on('empresas')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
+            $table->foreign('atividade_code')
+                ->references('code')
+                ->on('atividades')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
+
+            $table->unique([$columnNames['cnpj'], 'atividade_code']);
+        });
+
+        Schema::create($tableNames['qsa'], function (Blueprint $table) use ($columnNames) {
+            $table->uuid()->primary();
+            $table->string($columnNames['cnpj'], 14);
+            $table->string('nome');
+            $table->string('qual');
+            $table->string('pais_origem')->nullable();
+            $table->string('nome_rep_legal')->nullable();
+            $table->string('qual_rep_legal')->nullable();
+
+            $table->foreign($columnNames['cnpj'])
+                ->references($columnNames['cnpj'])
+                ->on('empresas')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+
+            $table->unique([$columnNames['cnpj'], 'nome']);
+        });
+
+        Schema::create($tableNames['simples'], function (Blueprint $table) use ($columnNames) {
+            $table->string($columnNames['cnpj'], 14)->primary();
+            $table->boolean('optante')->nullable();
+            $table->date('data_opcao')->nullable();
+            $table->date('data_exclusao')->nullable();
+            $table->timestamp('ultima_atualizacao')->nullable();
+
+            $table->foreign($columnNames['cnpj'])
+                ->references($columnNames['cnpj'])
+                ->on('empresas')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
+        });
+
+        Schema::create($tableNames['simples_historico'], function (Blueprint $table) use ($columnNames) {
+            $table->uuid()->primary();
+            $table->string($columnNames['cnpj'], 14);
+            $table->date('inicio');
+            $table->date('fim')->nullable();
+            $table->string('detalhamento');
+
+            $table->unique([$columnNames['cnpj'], 'inicio', 'fim']);
+
+            $table->foreign($columnNames['cnpj'])
+                ->references($columnNames['cnpj'])
+                ->on('empresas')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
+        });
+
+        Schema::create($tableNames['simei'], function (Blueprint $table) use ($columnNames) {
+            $table->string($columnNames['cnpj'], 14)->primary();
+            $table->boolean('optante')->nullable();
+            $table->date('data_opcao')->nullable();
+            $table->date('data_exclusao')->nullable();
+            $table->timestamp('ultima_atualizacao')->nullable();
+
+            $table->foreign($columnNames['cnpj'])
+                ->references($columnNames['cnpj'])
+                ->on('empresas')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
+        });
+
+        Schema::create($tableNames['simei_historico'], function (Blueprint $table) use ($columnNames) {
+            $table->uuid()->primary();
+            $table->string($columnNames['cnpj'], 14);
+            $table->date('inicio');
+            $table->date('fim')->nullable();
+            $table->string('detalhamento');
+
+            $table->unique([$columnNames['cnpj'], 'inicio', 'fim']);
+
+            $table->foreign($columnNames['cnpj'])
+                ->references($columnNames['cnpj'])
+                ->on('empresas')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
+        });
+
+        Schema::create($tableNames['inscricoes_estaduais'], function (Blueprint $table) use ($columnNames) {
+            $table->uuid()->primary();
+            $table->string($columnNames['cnpj'], 14);
+            $table->string('uf', 2);
+            $table->string('ie');
+            $table->string('tipo_ie');
+            $table->string('situacao_ie');
+            $table->date('data_situacao')->nullable();
+            $table->string('regime_icms');
+            $table->string('situacao_cnpj');
+            $table->date('data_atualizacao');
+
+            $table->foreign($columnNames['cnpj'])
+                ->references($columnNames['cnpj'])
+                ->on('empresas')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+
+            $table->unique(['ie', 'uf']);
+        });
+    }
+
+    public function down(): void
+    {
+        $tableNames = config('receitaws.table_names');
+
+        Schema::dropIfExists($tableNames['atividades_secundarias']);
+        Schema::dropIfExists($tableNames['qsa']);
+        Schema::dropIfExists($tableNames['simples']);
+        Schema::dropIfExists($tableNames['simples_historico']);
+        Schema::dropIfExists($tableNames['simei']);
+        Schema::dropIfExists($tableNames['simei_historico']);
+        Schema::dropIfExists($tableNames['inscricoes_estaduais']);
+        Schema::dropIfExists($tableNames['telefones']);
+        Schema::dropIfExists($tableNames['empresas']);
+        Schema::dropIfExists($tableNames['atividades']);
+    }
+};
