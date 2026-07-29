@@ -8,6 +8,7 @@ use function PHPUnit\Framework\assertCount;
 
 it('throws an exception if the days number is less than zero', function () {
     $faker = Factory::create(locale: 'pt_BR');
+    // @phpstan-ignore method.notFound
     $cnpj = $faker->cnpj();
 
     $api = ReceitaWSApiConfig::factory()->create();

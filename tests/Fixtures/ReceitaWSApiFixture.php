@@ -11,6 +11,7 @@ class ReceitaWSApiFixture
         $faker = Factory::create(locale: 'pt_BR');
 
         return [
+            // @phpstan-ignore method.notFound
             'cnpj' => $cnpj ?? $faker->cnpj(false),
             'abertura' => $faker->date('d/m/Y'),
             'situacao' => 'ATIVA',
@@ -25,9 +26,11 @@ class ReceitaWSApiFixture
             ]],
             'logradouro' => $faker->streetName(),
             'numero' => $faker->buildingNumber(),
+            // @phpstan-ignore method.notFound
             'complemento' => $faker->secondaryAddress(),
             'municipio' => $faker->city(),
             'bairro' => $faker->streetSuffix(),
+            // @phpstan-ignore method.notFound
             'uf' => $faker->stateAbbr(),
             'cep' => $faker->postcode(),
             'email' => $faker->email(),
@@ -68,10 +71,12 @@ class ReceitaWSApiFixture
         $faker = Factory::create(locale: 'pt_BR');
 
         return [
+            // @phpstan-ignore method.notFound
             'cnpj' => $cnpj ?? $faker->cnpj(false),
             'ultima_atualizacao' => $faker->date('c'),
             'status' => 'OK',
             'registros' => [[
+                // @phpstan-ignore method.notFound
                 'uf' => $faker->stateAbbr(),
                 'ie' => (string) $faker->numberBetween(1000000000, 99999999999),
                 'tipo_ie' => 'IE Normal',
@@ -93,6 +98,7 @@ class ReceitaWSApiFixture
         $faker = Factory::create(locale: 'pt_BR');
 
         return [
+            // @phpstan-ignore method.notFound
             'cnpj' => $cnpj ?? $faker->cnpj(false),
             'simples' => [
                 'optante' => $faker->boolean(),

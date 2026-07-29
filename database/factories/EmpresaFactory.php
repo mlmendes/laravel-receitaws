@@ -15,6 +15,7 @@ class EmpresaFactory extends Factory
         $faker = \Faker\Factory::create(locale: 'pt_BR');
 
         return [
+            // @phpstan-ignore method.notFound
             'cnpj' => $faker->cnpj(false),
             'tipo' => 'MATRIZ',
             'porte' => 'MICRO EMPRESA',
@@ -24,10 +25,12 @@ class EmpresaFactory extends Factory
             'natureza_juridica' => $faker->sentence(),
             'logradouro' => $faker->streetName(),
             'numero' => $faker->buildingNumber(),
+            // @phpstan-ignore method.notFound
             'complemento' => $faker->secondaryAddress(),
             'cep' => $faker->postcode(),
             'bairro' => $faker->streetSuffix(),
             'municipio' => $faker->city(),
+            // @phpstan-ignore method.notFound
             'uf' => $faker->stateAbbr(),
             'email' => $faker->email(),
             'efr' => '',
