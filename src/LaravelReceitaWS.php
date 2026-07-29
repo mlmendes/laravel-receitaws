@@ -7,14 +7,22 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use InvalidArgumentException;
 use MLMendes\LaravelReceitaWS\Enum\Fallback;
-use MLMendes\LaravelReceitaWS\Models\Atividade;
-use MLMendes\LaravelReceitaWS\Models\Empresa;
-use MLMendes\LaravelReceitaWS\Models\ReceitaWSApiConfig as ReceitaWSModel;
+use MLMendes\LaravelReceitaWS\Models\ReceitaWSApiConfig;
 use RuntimeException;
 use Throwable;
 
 class LaravelReceitaWS
 {
+    protected string $atividadeModel;
+
+    protected string $empresaModel;
+
+    public function __construct()
+    {
+        $this->atividadeModel = app(LaravelReceitaWSRegistrar::class)->models['atividade'];
+        $this->empresaModel = app(LaravelReceitaWSRegistrar::class)->models['empresa'];
+    }
+
     /**
      * @throws InvalidArgumentException
      *
@@ -22,7 +30,7 @@ class LaravelReceitaWS
      *
      * @source https://gist.github.com/brunoconstantino/75a7dcdda56317a69e52e72a27446826
      */
-    private function validateCNPJ(string $cnpj): string
+    protected function validateCNPJ(string $cnpj): string
     {
         $c = preg_replace('/[^A-Z0-9]/', '', strtoupper($cnpj));
         if (strlen($c) === 14 || ! preg_match('/^0{14}$/', $c)) {
@@ -52,7 +60,7 @@ class LaravelReceitaWS
      * @throws InvalidArgumentException
      * @throws Throwable
      */
-    public function receitaFederal(ReceitaWSModel $receitaWS, string $cnpj, int $days = 0, Fallback $fallback = Fallback::CACHE_ON_ERROR): void
+    public function receitaFederal(ReceitaWSApiConfig $receitaWS, string $cnpj, int $days = 0, Fallback $fallback = Fallback::CACHE_ON_ERROR): void
     {
         $cnpj = $this->validateCNPJ($cnpj);
 
@@ -131,9 +139,9 @@ class LaravelReceitaWS
         }
 
         DB::transaction(function () use ($response, $data, $atividades, $telefones) {
-            Atividade::query()->upsert($atividades, 'code', ['code', 'text']);
-            Empresa::query()->upsert($data, 'cnpj', array_keys($data));
-            $empresa = Empresa::query()->find($data['cnpj']);
+            $this->atividadeModel::query()->upsert($atividades, 'code', ['code', 'text']);
+            $this->empresaModel::query()->upsert($data, 'cnpj', array_keys($data));
+            $empresa = $this->empresaModel::query()->find($data['cnpj']);
 
             $empresa->telefones()->upsert($telefones, ['cnpj', 'numero'], ['cnpj', 'numero']);
 
@@ -189,7 +197,7 @@ class LaravelReceitaWS
         });
     }
 
-    public function cadastroDeContribuinte(ReceitaWSModel $receitaWS, string $cnpj, int $days = 0, Fallback $fallback = Fallback::CACHE_ON_ERROR): void
+    public function cadastroDeContribuinte(ReceitaWSApiConfig $receitaWS, string $cnpj, int $days = 0, Fallback $fallback = Fallback::CACHE_ON_ERROR): void
     {
         $cnpj = $this->validateCNPJ($cnpj);
 
@@ -208,7 +216,7 @@ class LaravelReceitaWS
         }
 
         DB::transaction(function () use ($response, $cnpj) {
-            $empresa = Empresa::query()->find($cnpj);
+            $empresa = $this->empresaModel::query()->find($cnpj);
 
             $empresa->inscricoesEstaduais()->upsert(
                 array_map(function ($value) use ($cnpj) {
@@ -228,7 +236,7 @@ class LaravelReceitaWS
         });
     }
 
-    public function simplesNacional(ReceitaWSModel $receitaWS, string $cnpj, int $days = 0, Fallback $fallback = Fallback::CACHE_ON_ERROR): void
+    public function simplesNacional(ReceitaWSApiConfig $receitaWS, string $cnpj, int $days = 0, Fallback $fallback = Fallback::CACHE_ON_ERROR): void
     {
         $cnpj = $this->validateCNPJ($cnpj);
 
@@ -247,7 +255,7 @@ class LaravelReceitaWS
         }
 
         DB::transaction(function () use ($response, $cnpj) {
-            $empresa = Empresa::query()->find($cnpj);
+            $empresa = $this->empresaModel::query()->find($cnpj);
 
             $empresa->simples()->upsert([
                 'cnpj' => $cnpj,
