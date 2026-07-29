@@ -36,8 +36,8 @@ class Empresa extends Model
     {
         return $this->belongsToMany(
             app(LaravelReceitaWSRegistrar::class)->models['atividade'],
-            app(LaravelReceitaWSRegistrar::class)->tableNames['atividades_secundarias'],
-            app(LaravelReceitaWSRegistrar::class)->cnpjColumn,
+            'atividades_secundarias',
+            'cnpj',
             'atividade_code'
         );
     }
@@ -46,8 +46,8 @@ class Empresa extends Model
     {
         return $this->hasMany(
             app(LaravelReceitaWSRegistrar::class)->models['inscricao_estadual'],
-            app(LaravelReceitaWSRegistrar::class)->cnpjColumn,
-            app(LaravelReceitaWSRegistrar::class)->cnpjColumn
+            'cnpj',
+            'cnpj'
         );
     }
 
@@ -55,8 +55,8 @@ class Empresa extends Model
     {
         return $this->hasMany(
             app(LaravelReceitaWSRegistrar::class)->models['qsa'],
-            app(LaravelReceitaWSRegistrar::class)->cnpjColumn,
-            app(LaravelReceitaWSRegistrar::class)->cnpjColumn
+            'cnpj',
+            'cnpj'
         );
     }
 
@@ -64,8 +64,8 @@ class Empresa extends Model
     {
         return $this->hasOne(
             app(LaravelReceitaWSRegistrar::class)->models['simei'],
-            app(LaravelReceitaWSRegistrar::class)->cnpjColumn,
-            app(LaravelReceitaWSRegistrar::class)->cnpjColumn
+            'cnpj',
+            'cnpj'
         );
     }
 
@@ -73,8 +73,8 @@ class Empresa extends Model
     {
         return $this->hasMany(
             app(LaravelReceitaWSRegistrar::class)->models['simei_historico'],
-            app(LaravelReceitaWSRegistrar::class)->cnpjColumn,
-            app(LaravelReceitaWSRegistrar::class)->cnpjColumn
+            'cnpj',
+            'cnpj'
         );
     }
 
@@ -82,8 +82,8 @@ class Empresa extends Model
     {
         return $this->hasOne(
             app(LaravelReceitaWSRegistrar::class)->models['simples'],
-            app(LaravelReceitaWSRegistrar::class)->cnpjColumn,
-            app(LaravelReceitaWSRegistrar::class)->cnpjColumn
+            'cnpj',
+            'cnpj'
         );
     }
 
@@ -91,8 +91,8 @@ class Empresa extends Model
     {
         return $this->hasMany(
             app(LaravelReceitaWSRegistrar::class)->models['simples_historico'],
-            app(LaravelReceitaWSRegistrar::class)->cnpjColumn,
-            app(LaravelReceitaWSRegistrar::class)->cnpjColumn
+            'cnpj',
+            'cnpj'
         );
     }
 
@@ -100,8 +100,8 @@ class Empresa extends Model
     {
         return $this->hasMany(
             app(LaravelReceitaWSRegistrar::class)->models['telefone'],
-            app(LaravelReceitaWSRegistrar::class)->cnpjColumn,
-            app(LaravelReceitaWSRegistrar::class)->cnpjColumn
+            'cnpj',
+            'cnpj'
         );
     }
 }

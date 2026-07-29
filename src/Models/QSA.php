@@ -21,8 +21,8 @@ class QSA extends Model
     {
         return $this->belongsTo(
             app(LaravelReceitaWSRegistrar::class)->models['empresa'],
-            app(LaravelReceitaWSRegistrar::class)->cnpjColumn,
-            app(LaravelReceitaWSRegistrar::class)->cnpjColumn
+            'cnpj',
+            'cnpj'
         );
     }
 }

@@ -23,22 +23,4 @@ return [
         'simples_historico' => SimplesHistorico::class,
         'telefone' => Telefone::class,
     ],
-    'table_names' => [
-        'atividades' => 'atividades',
-        'telefones' => 'telefones',
-        'atividades_secundarias' => 'atividades_secundarias',
-        'qsa' => 'qsa',
-        'simples' => 'simples',
-        'simples_historico' => 'simples_historico',
-        'simei' => 'simei',
-        'simei_historico' => 'simei_historico',
-        'inscricoes_estaduais' => 'inscricoes_estaduais',
-    ],
-    'column_names' => [
-
-        /**
-         * Nome da coluna a ser usada como chave estrangeira nas demais tabelas para referenciar o CNPJ
-         */
-        'cnpj' => 'cnpj',
-    ],
 ];
