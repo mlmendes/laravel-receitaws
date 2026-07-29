@@ -29,11 +29,11 @@ return new class extends Migration
             $table->string('municipio');
             $table->string('uf');
             $table->string('email');
-            $table->string('efr');
+            $table->string('efr')->nullable();
             $table->string('situacao');
             $table->date('data_situacao');
             $table->string('motivo_situacao');
-            $table->string('situacao_especial');
+            $table->string('situacao_especial')->nullable();
             $table->date('data_situacao_especial')->nullable();
             $table->decimal('capital_social');
             $table->string('atividade_principal', 7);

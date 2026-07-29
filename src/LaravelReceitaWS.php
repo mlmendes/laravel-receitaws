@@ -87,12 +87,16 @@ class LaravelReceitaWS
             'municipio',
             'uf',
             'email',
-            'efr',
             'situacao',
             'motivo_situacao',
-            'situacao_especial',
         ]));
 
+        if (! empty($data['situacao_especial'])) {
+            $data['situacao_especial'] = $response->json('situacao_especial');
+        }
+        if (! empty($data['efr'])) {
+            $data['efr'] = $response->json('efr');
+        }
         $data['cnpj'] = preg_replace('/[^A-Z0-9]/', '', $response->json('cnpj'));
         $data['cep'] = preg_replace('/\D/', '', $response->json('cep'));
         $data['abertura'] = Carbon::createFromFormat('d/m/Y', $response->json('abertura'))->format('Y-m-d');
