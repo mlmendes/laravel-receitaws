@@ -8,6 +8,7 @@ use MLMendes\LaravelReceitaWS\Models\SimeiHistorico;
 use MLMendes\LaravelReceitaWS\Models\Simples;
 use MLMendes\LaravelReceitaWS\Models\SimplesHistorico;
 use MLMendes\LaravelReceitaWS\Tests\Fixtures\ReceitaWSApiFixture;
+
 use function Pest\Laravel\assertModelExists;
 
 it('creates related models', function () {
@@ -21,7 +22,7 @@ it('creates related models', function () {
     LaravelReceitaWS::simplesNacional($api, $empresa->cnpj);
 
     Http::assertSent(function ($request) use ($api) {
-        return $request->hasHeader('Authorization', 'Bearer ' . $api->token);
+        return $request->hasHeader('Authorization', 'Bearer '.$api->token);
     });
 
     assertModelExists($empresa->simples()->sole());
