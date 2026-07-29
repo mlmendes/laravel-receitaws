@@ -25,7 +25,6 @@ return [
     ],
     'table_names' => [
         'atividades' => 'atividades',
-        'empresas' => 'empresas',
         'telefones' => 'telefones',
         'atividades_secundarias' => 'atividades_secundarias',
         'qsa' => 'qsa',
@@ -38,8 +37,7 @@ return [
     'column_names' => [
 
         /**
-         * Nome da coluna a ser usada como chave primária na tabela empresas
-         * e chave estrangeira nas demais tabelas para referenciar o CNPJ
+         * Nome da coluna a ser usada como chave estrangeira nas demais tabelas para referenciar o CNPJ
          */
         'cnpj' => 'cnpj',
     ],

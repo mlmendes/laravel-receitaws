@@ -5,9 +5,11 @@ namespace MLMendes\LaravelReceitaWS\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Attributes\WithoutTimestamps;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use MLMendes\LaravelReceitaWS\Database\Factories\AtividadeFactory;
 use MLMendes\LaravelReceitaWS\LaravelReceitaWSRegistrar;
 
 #[Fillable(['code', 'text'])]
@@ -15,6 +17,9 @@ use MLMendes\LaravelReceitaWS\LaravelReceitaWSRegistrar;
 #[WithoutTimestamps]
 class Atividade extends Model
 {
+    /** @use HasFactory<AtividadeFactory> */
+    use HasFactory;
+
     /**
      * Empresas que possuem essa atividade como principal
      */

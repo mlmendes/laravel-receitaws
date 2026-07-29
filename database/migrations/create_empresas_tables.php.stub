@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('text');
         });
 
-        Schema::create($tableNames['empresas'], function (Blueprint $table) use ($columnNames) {
+        Schema::create('empresas', function (Blueprint $table) use ($columnNames) {
             $table->string($columnNames['cnpj'], 14)->primary();
             $table->enum('tipo', ['MATRIZ', 'FILIAL']);
             $table->string('porte');
@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('natureza_juridica');
             $table->string('logradouro');
             $table->string('numero');
+            $table->string('complemento')->nullable();
             $table->string('cep');
             $table->string('bairro');
             $table->string('municipio');
@@ -192,7 +193,7 @@ return new class extends Migration
         Schema::dropIfExists($tableNames['simei_historico']);
         Schema::dropIfExists($tableNames['inscricoes_estaduais']);
         Schema::dropIfExists($tableNames['telefones']);
-        Schema::dropIfExists($tableNames['empresas']);
+        Schema::dropIfExists('empresas');
         Schema::dropIfExists($tableNames['atividades']);
     }
 };
