@@ -12,6 +12,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use MLMendes\LaravelReceitaWS\Database\Factories\AtividadeFactory;
 use MLMendes\LaravelReceitaWS\LaravelReceitaWSRegistrar;
 
+/**
+ * @property string $code
+ * @property string $text
+ */
 #[Fillable(['code', 'text'])]
 #[Table(key: 'code', keyType: 'string', incrementing: false)]
 #[WithoutTimestamps]

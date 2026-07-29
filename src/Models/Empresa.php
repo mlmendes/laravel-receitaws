@@ -12,9 +12,36 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 use MLMendes\LaravelReceitaWS\Database\Factories\EmpresaFactory;
 use MLMendes\LaravelReceitaWS\LaravelReceitaWSRegistrar;
 
+/**
+ * @property string $cnpj
+ * @property string $tipo
+ * @property string $porte
+ * @property string $nome
+ * @property string $fantasia
+ * @property Carbon $abertura
+ * @property string $natureza_juridica
+ * @property string $logradouro
+ * @property string $numero
+ * @property string|null $complemento
+ * @property string $cep
+ * @property string $bairro
+ * @property string $municipio
+ * @property string $uf
+ * @property string $email
+ * @property string $efr
+ * @property string $situacao
+ * @property Carbon $data_situacao
+ * @property string $motivo_situacao
+ * @property string $situacao_especial
+ * @property Carbon|null $data_situacao_especial
+ * @property float $capital_social
+ * @property string $atividade_principal
+ * @property Carbon|null $deleted_at
+ */
 #[Fillable(['cnpj', 'tipo', 'porte', 'nome', 'fantasia', 'abertura', 'natureza_juridica', 'logradouro', 'numero', 'cep', 'bairro', 'municipio', 'uf', 'email', 'telefone', 'efr', 'situacao', 'data_situacao', 'motivo_situacao', 'situacao_especial', 'data_situacao_especial', 'capital_social', 'atividade_principal'])]
 #[Table(key: 'cnpj', keyType: 'string', incrementing: false)]
 #[WithoutTimestamps]

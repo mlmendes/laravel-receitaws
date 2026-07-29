@@ -10,6 +10,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use MLMendes\LaravelReceitaWS\LaravelReceitaWSRegistrar;
 
+/**
+ * @property string $uuid
+ * @property string $cnpj
+ * @property string $numero
+ */
 #[Fillable(['cnpj', 'numero'])]
 #[Table(key: 'uuid', keyType: 'string', incrementing: false)]
 #[WithoutTimestamps]
