@@ -17,7 +17,6 @@ class LaravelReceitaWSServiceProvider extends PackageServiceProvider
         $package
             ->name('laravel-receitaws')
             ->hasConfigFile()
-            ->hasViews()
             ->hasMigrations(['create_empresas_tables', 'create_receitaws_table']);
     }
 }
