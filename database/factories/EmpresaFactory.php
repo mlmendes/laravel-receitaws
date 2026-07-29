@@ -36,7 +36,7 @@ class EmpresaFactory extends Factory
             'motivo_situacao' => $faker->sentence(),
             'situacao_especial' => '',
             'data_situacao_especial' => null,
-            'capital_social' => (string)$faker->numberBetween(1, 99999999),
+            'capital_social' => (string) $faker->numberBetween(1, 99999999),
             'atividade_principal' => Atividade::factory(),
         ];
     }

@@ -1,9 +1,9 @@
 <?php
 
-
 use Faker\Factory;
 use MLMendes\LaravelReceitaWS\Facades\LaravelReceitaWS;
 use MLMendes\LaravelReceitaWS\Models\ReceitaWSApiConfig;
+
 use function PHPUnit\Framework\assertCount;
 
 it('throws an exception if the days number is less than zero', function () {

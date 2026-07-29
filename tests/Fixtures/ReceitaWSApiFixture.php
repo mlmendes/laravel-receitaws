@@ -20,7 +20,7 @@ class ReceitaWSApiFixture
             'porte' => 'MICRO EMPRESA',
             'natureza_juridica' => $faker->sentence(),
             'qsa' => [[
-                'nome' => $faker->firstName() . ' ' . $faker->lastName(),
+                'nome' => $faker->firstName().' '.$faker->lastName(),
                 'qual' => '49-Sócio-Administrador',
             ]],
             'logradouro' => $faker->streetName(),
@@ -34,11 +34,11 @@ class ReceitaWSApiFixture
             'telefone' => "{$faker->landlineNumber()} / {$faker->cellphoneNumber()}",
             'data_situacao' => $faker->date('d/m/Y'),
             'atividade_principal' => [[
-                'code' => (string)$faker->numberBetween(1000000, 9999999),
+                'code' => (string) $faker->numberBetween(1000000, 9999999),
                 'text' => $faker->sentence(),
             ]],
             'atividades_secundarias' => [[
-                'code' => (string)$faker->numberBetween(1000000, 9999999),
+                'code' => (string) $faker->numberBetween(1000000, 9999999),
                 'text' => $faker->sentence(),
             ]],
             'ultima_atualizacao' => $faker->date('c'),
@@ -47,7 +47,7 @@ class ReceitaWSApiFixture
             'situacao_especial' => '',
             'motivo_situacao' => $faker->sentence(),
             'data_situacao_especial' => '',
-            'capital_social' => (string)$faker->numberBetween(1, 99999999),
+            'capital_social' => (string) $faker->numberBetween(1, 99999999),
             'simples' => [
                 'optante' => $faker->boolean(),
                 'data_opcao' => $faker->date('d/m/Y'),
@@ -73,7 +73,7 @@ class ReceitaWSApiFixture
             'status' => 'OK',
             'registros' => [[
                 'uf' => $faker->stateAbbr(),
-                'ie' => (string)$faker->numberBetween(1000000000, 99999999999),
+                'ie' => (string) $faker->numberBetween(1000000000, 99999999999),
                 'tipo_ie' => 'IE Normal',
                 'situacao_ie' => 'Habilitado',
                 'data_situacao' => $faker->date('d/m/Y'),

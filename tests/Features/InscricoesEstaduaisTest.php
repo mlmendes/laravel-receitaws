@@ -5,6 +5,7 @@ use MLMendes\LaravelReceitaWS\Models\Empresa;
 use MLMendes\LaravelReceitaWS\Models\InscricaoEstadual;
 use MLMendes\LaravelReceitaWS\Models\ReceitaWSApiConfig;
 use MLMendes\LaravelReceitaWS\Tests\Fixtures\ReceitaWSApiFixture;
+
 use function Pest\Laravel\assertModelExists;
 
 test('Inscrições Estaduais creates related models', function () {
@@ -18,7 +19,7 @@ test('Inscrições Estaduais creates related models', function () {
     LaravelReceitaWS::cadastroDeContribuinte($api, $empresa->cnpj);
 
     Http::assertSent(function ($request) use ($api) {
-        return $request->hasHeader('Authorization', 'Bearer ' . $api->token);
+        return $request->hasHeader('Authorization', 'Bearer '.$api->token);
     });
 
     foreach ($data['registros'] as $inscricaoEstadual) {
