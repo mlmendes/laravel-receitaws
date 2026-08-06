@@ -30,7 +30,7 @@ class LaravelReceitaWS
      *
      * @source https://gist.github.com/brunoconstantino/75a7dcdda56317a69e52e72a27446826
      */
-    protected function validateCNPJ(string $cnpj): string
+    public function validateCNPJ(string $cnpj): string
     {
         $c = preg_replace('/[^A-Z0-9]/', '', strtoupper($cnpj));
         if (strlen($c) === 14 || ! preg_match('/^0{14}$/', $c)) {
