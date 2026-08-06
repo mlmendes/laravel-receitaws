@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use MLMendes\LaravelReceitaWS\Database\Factories\EmpresaFactory;
-use MLMendes\LaravelReceitaWS\LaravelReceitaWSRegistrar;
+use MLMendes\LaravelReceitaWS\ReceitaWSRegistrar;
 
 /**
  * @property string $cnpj
@@ -53,7 +53,7 @@ class Empresa extends Model
     public function atividadePrincipal(): BelongsTo
     {
         return $this->belongsTo(
-            app(LaravelReceitaWSRegistrar::class)->models['atividade'],
+            app(ReceitaWSRegistrar::class)->models['atividade'],
             'atividade_principal',
             'code'
         );
@@ -62,7 +62,7 @@ class Empresa extends Model
     public function atividadesSecundarias(): BelongsToMany
     {
         return $this->belongsToMany(
-            app(LaravelReceitaWSRegistrar::class)->models['atividade'],
+            app(ReceitaWSRegistrar::class)->models['atividade'],
             'atividades_secundarias',
             'cnpj',
             'atividade_code'
@@ -72,7 +72,7 @@ class Empresa extends Model
     public function inscricoesEstaduais(): HasMany
     {
         return $this->hasMany(
-            app(LaravelReceitaWSRegistrar::class)->models['inscricao_estadual'],
+            app(ReceitaWSRegistrar::class)->models['inscricao_estadual'],
             'cnpj',
             'cnpj'
         );
@@ -81,7 +81,7 @@ class Empresa extends Model
     public function quadroSocietarioAdministrativo(): HasMany
     {
         return $this->hasMany(
-            app(LaravelReceitaWSRegistrar::class)->models['qsa'],
+            app(ReceitaWSRegistrar::class)->models['qsa'],
             'cnpj',
             'cnpj'
         );
@@ -90,7 +90,7 @@ class Empresa extends Model
     public function simei(): HasOne
     {
         return $this->hasOne(
-            app(LaravelReceitaWSRegistrar::class)->models['simei'],
+            app(ReceitaWSRegistrar::class)->models['simei'],
             'cnpj',
             'cnpj'
         );
@@ -99,7 +99,7 @@ class Empresa extends Model
     public function simeiHistorico(): HasMany
     {
         return $this->hasMany(
-            app(LaravelReceitaWSRegistrar::class)->models['simei_historico'],
+            app(ReceitaWSRegistrar::class)->models['simei_historico'],
             'cnpj',
             'cnpj'
         );
@@ -108,7 +108,7 @@ class Empresa extends Model
     public function simples(): HasOne
     {
         return $this->hasOne(
-            app(LaravelReceitaWSRegistrar::class)->models['simples'],
+            app(ReceitaWSRegistrar::class)->models['simples'],
             'cnpj',
             'cnpj'
         );
@@ -117,7 +117,7 @@ class Empresa extends Model
     public function simplesHistorico(): HasMany
     {
         return $this->hasMany(
-            app(LaravelReceitaWSRegistrar::class)->models['simples_historico'],
+            app(ReceitaWSRegistrar::class)->models['simples_historico'],
             'cnpj',
             'cnpj'
         );
@@ -126,7 +126,7 @@ class Empresa extends Model
     public function telefones(): HasMany
     {
         return $this->hasMany(
-            app(LaravelReceitaWSRegistrar::class)->models['telefone'],
+            app(ReceitaWSRegistrar::class)->models['telefone'],
             'cnpj',
             'cnpj'
         );

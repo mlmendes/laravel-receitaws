@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use MLMendes\LaravelReceitaWS\Database\Factories\AtividadeFactory;
-use MLMendes\LaravelReceitaWS\LaravelReceitaWSRegistrar;
+use MLMendes\LaravelReceitaWS\ReceitaWSRegistrar;
 
 /**
  * @property string $code
@@ -29,7 +29,7 @@ class Atividade extends Model
      */
     public function principalEmpresas(): HasMany
     {
-        return $this->hasMany(app(LaravelReceitaWSRegistrar::class)->models['empresa'], 'atividade_principal');
+        return $this->hasMany(app(ReceitaWSRegistrar::class)->models['empresa'], 'atividade_principal');
     }
 
     /**
@@ -37,6 +37,6 @@ class Atividade extends Model
      */
     public function secundariaEmpresas(): BelongsToMany
     {
-        return $this->belongsToMany(app(LaravelReceitaWSRegistrar::class)->models['empresa'], 'atividades_secundarias', 'atividade_code', 'cnpj');
+        return $this->belongsToMany(app(ReceitaWSRegistrar::class)->models['empresa'], 'atividades_secundarias', 'atividade_code', 'cnpj');
     }
 }

@@ -2,7 +2,7 @@
 
 use Faker\Factory;
 use Illuminate\Support\Facades\Http;
-use MLMendes\LaravelReceitaWS\Facades\LaravelReceitaWS;
+use MLMendes\LaravelReceitaWS\Facades\ReceitaWS;
 use MLMendes\LaravelReceitaWS\Models\Atividade;
 use MLMendes\LaravelReceitaWS\Models\Empresa;
 use MLMendes\LaravelReceitaWS\Models\ReceitaWSApiConfig;
@@ -22,7 +22,7 @@ test('Receita Federal method creates all empresa related models', function () {
 
     Http::fake(['https://receitaws.com.br/v1/cnpj/*' => Http::response($data)]);
 
-    LaravelReceitaWS::receitaFederal($api, $cnpj);
+    ReceitaWS::receitaFederal($api, $cnpj);
 
     Http::assertSent(function ($request) use ($api) {
         return $request->hasHeader('Authorization', 'Bearer '.$api->token);

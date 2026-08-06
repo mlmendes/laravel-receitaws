@@ -1,7 +1,7 @@
 <?php
 
 use Faker\Factory;
-use MLMendes\LaravelReceitaWS\Facades\LaravelReceitaWS;
+use MLMendes\LaravelReceitaWS\Facades\ReceitaWS;
 use MLMendes\LaravelReceitaWS\Models\ReceitaWSApiConfig;
 
 use function PHPUnit\Framework\assertCount;
@@ -21,21 +21,21 @@ it('throws an exception if the days number is less than zero', function () {
     $exceptions = [];
 
     try {
-        LaravelReceitaWS::receitaFederal($api, $cnpj, days: -1);
+        ReceitaWS::receitaFederal($api, $cnpj, days: -1);
     } catch (InvalidArgumentException $exception) {
         Http::assertNothingSent();
         $exceptions[] = $exception;
     }
 
     try {
-        LaravelReceitaWS::cadastroDeContribuinte($api, $cnpj, days: -1);
+        ReceitaWS::cadastroDeContribuinte($api, $cnpj, days: -1);
     } catch (InvalidArgumentException $exception) {
         Http::assertNothingSent();
         $exceptions[] = $exception;
     }
 
     try {
-        LaravelReceitaWS::simplesNacional($api, $cnpj, days: -1);
+        ReceitaWS::simplesNacional($api, $cnpj, days: -1);
     } catch (InvalidArgumentException $exception) {
         Http::assertNothingSent();
         $exceptions[] = $exception;
@@ -57,21 +57,21 @@ it('throws an exception if the CNPJ is invalid', function () {
     $exceptions = [];
 
     try {
-        LaravelReceitaWS::receitaFederal($api, $cnpj, days: -1);
+        ReceitaWS::receitaFederal($api, $cnpj, days: -1);
     } catch (InvalidArgumentException $exception) {
         Http::assertNothingSent();
         $exceptions[] = $exception;
     }
 
     try {
-        LaravelReceitaWS::cadastroDeContribuinte($api, $cnpj, days: -1);
+        ReceitaWS::cadastroDeContribuinte($api, $cnpj, days: -1);
     } catch (InvalidArgumentException $exception) {
         Http::assertNothingSent();
         $exceptions[] = $exception;
     }
 
     try {
-        LaravelReceitaWS::simplesNacional($api, $cnpj, days: -1);
+        ReceitaWS::simplesNacional($api, $cnpj, days: -1);
     } catch (InvalidArgumentException $exception) {
         Http::assertNothingSent();
         $exceptions[] = $exception;

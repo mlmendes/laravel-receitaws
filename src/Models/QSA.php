@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\WithoutTimestamps;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use MLMendes\LaravelReceitaWS\LaravelReceitaWSRegistrar;
+use MLMendes\LaravelReceitaWS\ReceitaWSRegistrar;
 
 /**
  * @property string $uuid
@@ -29,7 +29,7 @@ class QSA extends Model
     public function empresa(): BelongsTo
     {
         return $this->belongsTo(
-            app(LaravelReceitaWSRegistrar::class)->models['empresa'],
+            app(ReceitaWSRegistrar::class)->models['empresa'],
             'cnpj',
             'cnpj'
         );

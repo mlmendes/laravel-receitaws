@@ -2,7 +2,7 @@
 
 namespace MLMendes\LaravelReceitaWS;
 
-class LaravelReceitaWSRegistrar
+class ReceitaWSRegistrar
 {
     public array $models;
 

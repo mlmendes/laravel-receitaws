@@ -5,7 +5,7 @@ namespace MLMendes\LaravelReceitaWS;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class LaravelReceitaWSServiceProvider extends PackageServiceProvider
+class ReceitaWSServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {

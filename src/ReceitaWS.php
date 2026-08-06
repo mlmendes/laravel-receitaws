@@ -11,7 +11,7 @@ use MLMendes\LaravelReceitaWS\Models\ReceitaWSApiConfig;
 use RuntimeException;
 use Throwable;
 
-class LaravelReceitaWS
+class ReceitaWS
 {
     protected string $atividadeModel;
 
@@ -19,8 +19,8 @@ class LaravelReceitaWS
 
     public function __construct()
     {
-        $this->atividadeModel = app(LaravelReceitaWSRegistrar::class)->models['atividade'];
-        $this->empresaModel = app(LaravelReceitaWSRegistrar::class)->models['empresa'];
+        $this->atividadeModel = app(ReceitaWSRegistrar::class)->models['atividade'];
+        $this->empresaModel = app(ReceitaWSRegistrar::class)->models['empresa'];
     }
 
     /**

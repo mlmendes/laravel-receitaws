@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\WithoutTimestamps;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
-use MLMendes\LaravelReceitaWS\LaravelReceitaWSRegistrar;
+use MLMendes\LaravelReceitaWS\ReceitaWSRegistrar;
 
 /**
  * @property string $cnpj
@@ -25,7 +25,7 @@ class Simples extends Model
     public function empresa(): BelongsTo
     {
         return $this->belongsTo(
-            app(LaravelReceitaWSRegistrar::class)->models['empresa'],
+            app(ReceitaWSRegistrar::class)->models['empresa'],
             'cnpj',
             'cnpj'
         );

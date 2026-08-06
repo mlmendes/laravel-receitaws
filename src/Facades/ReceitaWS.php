@@ -5,12 +5,12 @@ namespace MLMendes\LaravelReceitaWS\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \MLMendes\LaravelReceitaWS\LaravelReceitaWS
+ * @see \MLMendes\LaravelReceitaWS\ReceitaWS
  */
-class LaravelReceitaWS extends Facade
+class ReceitaWS extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return \MLMendes\LaravelReceitaWS\LaravelReceitaWS::class;
+        return \MLMendes\LaravelReceitaWS\ReceitaWS::class;
     }
 }

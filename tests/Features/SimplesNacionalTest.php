@@ -1,6 +1,6 @@
 <?php
 
-use MLMendes\LaravelReceitaWS\Facades\LaravelReceitaWS;
+use MLMendes\LaravelReceitaWS\Facades\ReceitaWS;
 use MLMendes\LaravelReceitaWS\Models\Empresa;
 use MLMendes\LaravelReceitaWS\Models\ReceitaWSApiConfig;
 use MLMendes\LaravelReceitaWS\Models\Simei;
@@ -19,7 +19,7 @@ it('creates related models', function () {
     $api = ReceitaWSApiConfig::factory()->create();
     Http::fake(['https://receitaws.com.br/v1/simples/*' => Http::response($data)]);
 
-    LaravelReceitaWS::simplesNacional($api, $empresa->cnpj);
+    ReceitaWS::simplesNacional($api, $empresa->cnpj);
 
     Http::assertSent(function ($request) use ($api) {
         return $request->hasHeader('Authorization', 'Bearer '.$api->token);
